@@ -272,7 +272,7 @@ export default function Home() {
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center px-4 py-2 bg-green-600/20 border border-green-600/50 rounded-full glass mb-6">
             <Zap className="h-4 w-4 mr-2 text-green-400" />
-            <span className="text-sm text-green-400">Limited Time Offer</span>
+            <span className="text-sm text-green-400">Always Free</span>
           </div>
           <h2 className="text-5xl font-bold mb-6">
             Ready to Transform Your
