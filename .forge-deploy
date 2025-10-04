@@ -11,6 +11,14 @@ git pull origin main
 # Install dependencies
 npm ci --prefer-offline --no-audit
 
+# Create .env if it doesn't exist (Forge will populate on first deploy)
+if [ ! -f .env ]; then
+    echo "NEXT_PUBLIC_API_URL=https://api.ree.actor/api/v1" > .env
+fi
+
+# Export environment variables for build
+export $(cat .env | grep -v '^#' | xargs)
+
 # Build Next.js
 NODE_ENV=production npm run build
 
