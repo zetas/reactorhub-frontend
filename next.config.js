@@ -23,6 +23,44 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
+  // Cache control headers
+  async headers() {
+    return [
+      {
+        // Cache static assets aggressively (they have hashed filenames)
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Don't cache HTML pages - always revalidate
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
+          },
+        ],
+      },
+    ];
+  },
+  // Generate unique build ID for cache busting
+  generateBuildId: async () => {
+    // Use timestamp to ensure new build ID on each deploy
+    return `build-${Date.now()}`;
+  },
 };
 
 module.exports = nextConfig;
