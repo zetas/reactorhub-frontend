@@ -16,6 +16,11 @@ if [ ! -f .env ]; then
     echo "NEXT_PUBLIC_API_URL=https://api.ree.actor/api/v1" > .env
 fi
 
+# Create dummy auth.json if it doesn't exist (not needed for Next.js)
+if [ ! -f auth.json ]; then
+    echo "{}" > auth.json
+fi
+
 # Export environment variables for build
 export $(cat .env | grep -v '^#' | xargs)
 
