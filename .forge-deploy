@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+echo "🚀 Deploying Frontend..."
+
+cd $FORGE_SITE_PATH
+
+# Pull latest code
+git pull origin main
+
+# Install dependencies
+npm ci --prefer-offline --no-audit
+
+# Build Next.js
+NODE_ENV=production npm run build
+
+# Restart Next.js daemon
+sudo supervisorctl restart reactorhub-frontend || echo "⚠️  Daemon not configured yet"
+
+echo "✅ Frontend deployment complete!"
