@@ -30,7 +30,10 @@ rm -rf .next
 # Build Next.js
 NODE_ENV=production npm run build
 
-# Restart Next.js daemon
-sudo supervisorctl restart reactorhub-frontend || echo "⚠️  Daemon not configured yet"
+# Restart Next.js daemon using PM2
+# Use delete + start to ensure new release directory is used
+pm2 delete site-2874326 || true
+pm2 start npm --name "site-2874326" -- start
+pm2 save
 
 echo "✅ Frontend deployment complete!"
