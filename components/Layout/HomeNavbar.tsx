@@ -2,15 +2,24 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Menu, X, Users, Crown, DollarSign, LogIn } from 'lucide-react';
+import { Menu, X, Users, Crown, HelpCircle, LogIn } from 'lucide-react';
 
 export default function HomeNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const handleScrollToHowItWorks = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const element = document.getElementById('how-it-works');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setMobileMenuOpen(false);
+    }
+  };
+
   const navigation = [
     { name: 'For Creators', href: '/creators', icon: Crown },
     { name: 'For Patrons', href: '/patrons', icon: Users },
-    { name: 'Pricing', href: '/pricing', icon: DollarSign },
+    { name: 'How it Works', href: '/#how-it-works', icon: HelpCircle, onClick: handleScrollToHowItWorks },
   ];
 
   return (
@@ -31,6 +40,7 @@ export default function HomeNavbar() {
               <Link
                 key={item.name}
                 href={item.href}
+                onClick={item.onClick}
                 className="flex items-center space-x-1 text-gray-300 hover:text-white text-sm font-medium transition-colors"
               >
                 <item.icon className="h-4 w-4" />
@@ -79,8 +89,8 @@ export default function HomeNavbar() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={item.onClick || (() => setMobileMenuOpen(false))}
                   className="flex items-center space-x-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.name}</span>

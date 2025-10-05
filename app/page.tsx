@@ -159,6 +159,63 @@ export default function Home() {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-20 px-4 relative scroll-mt-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 heading-gradient">How It Works</h2>
+            <p className="text-xl text-gray-400">Get started in 3 simple steps</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Step 1 */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-red-500 to-pink-500 mb-6 relative">
+                <span className="text-3xl font-bold text-white">1</span>
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full animate-ping opacity-20"></div>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Connect with Patreon</h3>
+              <p className="text-gray-400">
+                Sign up and connect your Patreon account. We'll automatically sync your subscriptions.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 mb-6 relative">
+                <span className="text-3xl font-bold text-white">2</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Browse Your Content</h3>
+              <p className="text-gray-400">
+                All your supported creators' content organized in one beautiful interface, automatically sorted into series.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 mb-6 relative">
+                <span className="text-3xl font-bold text-white">3</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Watch & Enjoy</h3>
+              <p className="text-gray-400">
+                Stream with progress tracking, continue watching across devices, and never miss an episode.
+              </p>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-12">
+            <button
+              onClick={() => router.push('/auth/signup')}
+              className="px-8 py-4 bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold rounded-full hover:shadow-xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 text-lg"
+            >
+              Get Started Free
+            </button>
+            <p className="text-sm text-gray-500 mt-4">No credit card required • Always free</p>
+          </div>
+        </div>
+      </section>
+
       {/* Demo Video Section */}
       <section className="py-20 px-4 relative">
         <div className="max-w-7xl mx-auto">
