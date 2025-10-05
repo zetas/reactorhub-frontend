@@ -19,7 +19,9 @@ import {
   Star,
   Calendar,
   BarChart3,
-  Heart
+  Heart,
+  AlertCircle,
+  RefreshCw
 } from 'lucide-react';
 
 interface Content {
@@ -55,6 +57,7 @@ export default function PatronDashboard() {
   const [subscribedCreators, setSubscribedCreators] = useState<Creator[]>([]);
   const [recommendedContent, setRecommendedContent] = useState<Content[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -69,6 +72,7 @@ export default function PatronDashboard() {
 
   const loadDashboardData = async () => {
     setLoading(true);
+    setError(null);
     try {
       // Load all dashboard data in parallel
       const [continueData, recentData, creatorsData] = await Promise.all([
@@ -86,6 +90,7 @@ export default function PatronDashboard() {
       setRecommendedContent([]);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
+      setError('Unable to load dashboard data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -217,6 +222,26 @@ export default function PatronDashboard() {
 
       {/* Main Content */}
       <main className="relative pt-20 pb-12">
+        {/* Error State */}
+        {error && (
+          <div className="px-4 sm:px-6 lg:px-8 py-4">
+            <div className="mb-6 p-4 bg-red-900/20 border border-red-500/20 rounded-lg flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-red-400 font-medium">Error Loading Data</p>
+                <p className="text-gray-300 text-sm mt-1">{error}</p>
+                <button
+                  onClick={loadDashboardData}
+                  className="mt-2 text-sm text-red-400 hover:text-red-300 flex items-center gap-1"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Hero Section */}
         <section className="relative h-[60vh] overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-950/50 to-transparent z-10"></div>
@@ -296,12 +321,28 @@ export default function PatronDashboard() {
         </section>
 
         {/* Continue Watching */}
-        {continueWatching.length > 0 && (
-          <section className="px-4 sm:px-6 lg:px-8 py-8">
-            <h2 className="text-2xl font-bold mb-6 flex items-center">
-              <Clock className="h-6 w-6 mr-2 text-primary-500" />
-              Continue Watching
-            </h2>
+        <section className="px-4 sm:px-6 lg:px-8 py-8">
+          <h2 className="text-2xl font-bold mb-6 flex items-center">
+            <Clock className="h-6 w-6 mr-2 text-primary-500" />
+            Continue Watching
+          </h2>
+          {continueWatching.length === 0 ? (
+            <div className="glass-dark rounded-xl p-8 text-center max-w-2xl mx-auto">
+              <div className="w-16 h-16 bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <PlayCircle className="h-8 w-8 text-primary-500" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Ready to start watching?</h3>
+              <p className="text-gray-300 mb-6">
+                Connect your Patreon account to access content from all your supported creators
+              </p>
+              <button
+                onClick={() => router.push('/patron/subscriptions')}
+                className="btn-primary inline-flex items-center px-6 py-3 bg-primary-500 hover:bg-primary-600 rounded-md font-semibold transition shadow-lg"
+              >
+                Connect Patreon
+              </button>
+            </div>
+          ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
               {continueWatching.map((content) => (
                 <Link
@@ -331,8 +372,8 @@ export default function PatronDashboard() {
                 </Link>
               ))}
             </div>
-          </section>
-        )}
+          )}
+        </section>
 
         {/* Recommended for You */}
         <section className="px-4 sm:px-6 lg:px-8 py-8">

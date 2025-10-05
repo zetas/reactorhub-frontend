@@ -21,7 +21,8 @@ import {
   X,
   CheckCircle,
   PlayCircle,
-  RefreshCw
+  RefreshCw,
+  AlertCircle
 } from 'lucide-react';
 
 interface HistoryItem {
@@ -52,6 +53,7 @@ export default function HistoryPage() {
 
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterBy, setFilterBy] = useState<FilterBy>('all');
   const [showFilters, setShowFilters] = useState(false);
@@ -70,6 +72,7 @@ export default function HistoryPage() {
 
   const loadHistoryData = async () => {
     setLoading(true);
+    setError(null);
     try {
       // Mock history data - replace with actual API call
       const mockData: HistoryItem[] = [
@@ -164,6 +167,7 @@ export default function HistoryPage() {
       setHistoryItems(mockData);
     } catch (error) {
       console.error('Failed to load history:', error);
+      setError('Unable to load watch history. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -465,7 +469,25 @@ export default function HistoryPage() {
 
       {/* Main Content */}
       <main className="px-4 sm:px-6 lg:px-8 py-8">
-        {filteredItems.length === 0 ? (
+        {/* Error State */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/20 rounded-lg flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-red-400 font-medium">Error Loading Data</p>
+              <p className="text-gray-300 text-sm mt-1">{error}</p>
+              <button
+                onClick={loadHistoryData}
+                className="mt-2 text-sm text-red-400 hover:text-red-300 flex items-center gap-1"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Try Again
+              </button>
+            </div>
+          </div>
+        )}
+
+        {filteredItems.length === 0 && !error ? (
           <div className="text-center py-20">
             <div className="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-full flex items-center justify-center">
               <History className="h-12 w-12 text-gray-600" />
@@ -548,17 +570,21 @@ export default function HistoryPage() {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleResumeVideo(item)}
-                          className="p-2 bg-purple-600/90 hover:bg-purple-600 rounded-full transition"
+                          aria-label="Resume watching"
+                          className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center bg-purple-600/90 hover:bg-purple-600 rounded-full transition"
                           title="Resume watching"
                         >
-                          <Play className="h-4 w-4 text-white" />
+                          <Play className="h-5 w-5 text-white" aria-hidden="true" />
+                          <span className="sr-only">Resume watching</span>
                         </button>
                         <button
                           onClick={() => handleRestartVideo(item.contentId)}
-                          className="p-2 bg-gray-600/90 hover:bg-gray-600 rounded-full transition"
+                          aria-label="Watch from beginning"
+                          className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center bg-gray-600/90 hover:bg-gray-600 rounded-full transition"
                           title="Watch from beginning"
                         >
-                          <RotateCcw className="h-4 w-4 text-white" />
+                          <RotateCcw className="h-5 w-5 text-white" aria-hidden="true" />
+                          <span className="sr-only">Watch from beginning</span>
                         </button>
                       </div>
                     </div>
@@ -647,10 +673,12 @@ export default function HistoryPage() {
 
                     <button
                       onClick={() => handleRemoveFromHistory(item.id)}
-                      className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-600/20 rounded-md transition"
+                      aria-label="Remove from history"
+                      className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-red-400 hover:bg-red-600/20 rounded-md transition"
                       title="Remove from history"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-5 w-5" aria-hidden="true" />
+                      <span className="sr-only">Remove from history</span>
                     </button>
                   </div>
                 </div>

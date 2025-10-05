@@ -286,7 +286,7 @@ export default function BrowsePage() {
               <button
                 key={genre}
                 onClick={() => setSelectedGenre(genre)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
+                className={`px-4 py-3 min-h-[44px] rounded-full whitespace-nowrap transition-colors ${
                   selectedGenre === genre
                     ? 'bg-red-600 text-white'
                     : 'bg-gray-900 text-gray-300 hover:bg-gray-800'
@@ -404,6 +404,30 @@ export default function BrowsePage() {
           </div>
         </div>
 
+        {/* Empty State */}
+        {sortedCreators.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-full flex items-center justify-center">
+              <Search className="h-12 w-12 text-gray-600" />
+            </div>
+            <h3 className="text-2xl font-semibold mb-2">No creators found</h3>
+            <p className="text-gray-400 mb-8 max-w-md mx-auto">
+              We couldn't find any creators matching your search criteria. Try adjusting your filters or search terms.
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedGenre('All Genres');
+                setSelectedFilters(new Set());
+              }}
+              className="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 rounded-md font-semibold transition"
+            >
+              <X className="h-5 w-5 mr-2" />
+              Clear All Filters
+            </button>
+          </div>
+        ) : (
+          <>
         {/* Content Grid/List */}
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -561,6 +585,8 @@ export default function BrowsePage() {
               </Link>
             ))}
           </div>
+        )}
+          </>
         )}
       </div>
     </div>

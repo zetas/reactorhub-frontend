@@ -6,7 +6,8 @@ import {
   Upload, Film, Edit3, Trash2, Eye, Clock, Calendar, Filter,
   Search, Plus, MoreVertical, Play, TrendingUp, TrendingDown,
   Users, Heart, Settings, BookOpen, Grid, List, Star,
-  MessageCircle, Share2, Download, ChevronDown, Tag
+  MessageCircle, Share2, Download, ChevronDown, Tag, AlertCircle,
+  RefreshCw
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store';
 import { useNavigation } from '@/contexts/NavigationContext';
@@ -58,6 +59,7 @@ export default function ContentLibraryPage() {
   const [content, setContent] = useState<ContentItem[]>([]);
   const [series, setSeries] = useState<Series[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft' | 'processing'>('all');
@@ -84,6 +86,7 @@ export default function ContentLibraryPage() {
   const loadContent = async () => {
     try {
       setIsLoading(true);
+      setError(null);
 
       // Mock content data focused on patron engagement
       const mockContent: ContentItem[] = [
@@ -243,6 +246,7 @@ export default function ContentLibraryPage() {
       setSeries(mockSeries);
     } catch (error) {
       console.error('Failed to load content:', error);
+      setError('Unable to load content library. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -369,6 +373,24 @@ export default function ContentLibraryPage() {
             ))}
           </div>
         </div>
+
+        {/* Error State */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/20 rounded-lg flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-red-400 font-medium">Error Loading Data</p>
+              <p className="text-gray-300 text-sm mt-1">{error}</p>
+              <button
+                onClick={loadContent}
+                className="mt-2 text-sm text-red-400 hover:text-red-300 flex items-center gap-1"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Try Again
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Filters and Search */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">

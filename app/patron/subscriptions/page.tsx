@@ -32,7 +32,8 @@ import {
   ChevronDown,
   Globe,
   Youtube,
-  Twitch
+  Twitch,
+  AlertCircle
 } from 'lucide-react';
 
 interface CreatorPlatformConnection {
@@ -90,6 +91,7 @@ export default function SubscriptionsPage() {
   const { setBreadcrumbs, setBackUrl } = useNavigation();
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [subscriptions, setSubscriptions] = useState<CreatorSubscription[]>([]);
   const [creatorPlatformConnection, setCreatorPlatformConnection] = useState<CreatorPlatformConnection | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -119,6 +121,7 @@ export default function SubscriptionsPage() {
 
   const loadSubscriptionData = async () => {
     setLoading(true);
+    setError(null);
     try {
       // Mock subscription data - replace with actual API calls
       const mockCreatorPlatformConnection: CreatorPlatformConnection = {
@@ -252,6 +255,7 @@ export default function SubscriptionsPage() {
       setSubscriptions(mockSubscriptions);
     } catch (error) {
       console.error('Failed to load subscriptions:', error);
+      setError('Unable to load subscriptions. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -583,8 +587,26 @@ export default function SubscriptionsPage() {
 
       {/* Main Content */}
       <main className="px-4 sm:px-6 lg:px-8 py-8">
+        {/* Error State */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/20 rounded-lg flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-red-400 font-medium">Error Loading Data</p>
+              <p className="text-gray-300 text-sm mt-1">{error}</p>
+              <button
+                onClick={loadSubscriptionData}
+                className="mt-2 text-sm text-red-400 hover:text-red-300 flex items-center gap-1"
+              >
+                <RefreshCw className="h-4 w-4" />
+                Try Again
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Creator Platform Connection Banner */}
-        {!creatorPlatformConnection && (
+        {!creatorPlatformConnection && !error && (
           <div className="mb-8 p-6 bg-gradient-to-r from-orange-900/20 to-red-900/20 rounded-lg border border-orange-500/20">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -679,9 +701,10 @@ export default function SubscriptionsPage() {
                               href={subscription.creator.socialLinks.youtube}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-1 text-gray-400 hover:text-red-500 transition"
+                              aria-label="Visit YouTube channel"
+                              className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-red-500 transition"
                             >
-                              <Youtube className="h-4 w-4" />
+                              <Youtube className="h-5 w-5" aria-hidden="true" />
                             </a>
                           )}
                           {subscription.creator.socialLinks.twitch && (
@@ -689,9 +712,10 @@ export default function SubscriptionsPage() {
                               href={subscription.creator.socialLinks.twitch}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-1 text-gray-400 hover:text-purple-500 transition"
+                              aria-label="Visit Twitch channel"
+                              className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-purple-500 transition"
                             >
-                              <Twitch className="h-4 w-4" />
+                              <Twitch className="h-5 w-5" aria-hidden="true" />
                             </a>
                           )}
                           {subscription.creator.socialLinks.discord && (
@@ -699,9 +723,10 @@ export default function SubscriptionsPage() {
                               href={subscription.creator.socialLinks.discord}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-1 text-gray-400 hover:text-indigo-500 transition"
+                              aria-label="Join Discord server"
+                              className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-indigo-500 transition"
                             >
-                              <Globe className="h-4 w-4" />
+                              <Globe className="h-5 w-5" aria-hidden="true" />
                             </a>
                           )}
                         </div>
@@ -748,14 +773,14 @@ export default function SubscriptionsPage() {
                         <button
                           onClick={() => handleToggleNotifications(subscription.id, !subscription.notifications)}
                           aria-label={subscription.notifications ? 'Disable notifications' : 'Enable notifications'}
-                          className={`p-2 rounded-md transition ${
+                          className={`p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md transition ${
                             subscription.notifications
                               ? 'text-yellow-400 hover:bg-yellow-600/20'
                               : 'text-gray-400 hover:bg-gray-600/20'
                           }`}
                           title={subscription.notifications ? 'Disable notifications' : 'Enable notifications'}
                         >
-                          {subscription.notifications ? <Bell className="h-4 w-4" aria-hidden="true" /> : <BellOff className="h-4 w-4" aria-hidden="true" />}
+                          {subscription.notifications ? <Bell className="h-5 w-5" aria-hidden="true" /> : <BellOff className="h-5 w-5" aria-hidden="true" />}
                           <span className="sr-only">{subscription.notifications ? 'Disable notifications' : 'Enable notifications'}</span>
                         </button>
 
@@ -766,10 +791,10 @@ export default function SubscriptionsPage() {
                               : handlePauseSubscription(subscription.id)
                           }
                           aria-label={subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}
-                          className="p-2 text-gray-400 hover:text-white hover:bg-gray-600/20 rounded-md transition"
+                          className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-600/20 rounded-md transition"
                           title={subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}
                         >
-                          <Settings className="h-4 w-4" aria-hidden="true" />
+                          <Settings className="h-5 w-5" aria-hidden="true" />
                           <span className="sr-only">{subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}</span>
                         </button>
                       </div>

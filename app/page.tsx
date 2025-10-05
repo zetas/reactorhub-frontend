@@ -105,8 +105,8 @@ export default function Home() {
 
         <div className="relative z-10 max-w-7xl mx-auto mobile-padding text-center animate-fade-in">
           <div className="mb-4 sm:mb-6 inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-red-600/20 border border-red-600/50 rounded-full glass">
-            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-red-400" />
-            <span className="text-xs sm:text-sm text-red-400">Streaming Hub for Creator Reactions</span>
+            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-red-300" />
+            <span className="text-xs sm:text-sm text-red-300">Streaming Hub for Creator Reactions</span>
           </div>
 
           <h1 className="mobile-hero-text font-bold mb-4 sm:mb-6">
