@@ -57,6 +57,15 @@ export default function CreatorDashboard() {
   }, [setBreadcrumbs]);
 
   useEffect(() => {
+    // Check if user is authenticated before making API calls
+    // This prevents prefetch from triggering unauthorized API calls
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.log('No auth token, skipping dashboard data load');
+      setIsLoading(false);
+      return;
+    }
+
     // Temporarily bypass auth check for demo purposes
     // if (!user?.isCreator) {
     //   router.push('/creator/onboarding');

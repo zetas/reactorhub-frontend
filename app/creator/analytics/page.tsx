@@ -77,6 +77,15 @@ export default function CreatorAnalyticsPage() {
   const [selectedMetric, setSelectedMetric] = useState<'views' | 'revenue' | 'engagement'>('views');
 
   useEffect(() => {
+    // Check if user is authenticated before loading analytics
+    // This prevents prefetch from loading data for unauthenticated users
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.log('No auth token, skipping analytics load');
+      setIsLoading(false);
+      return;
+    }
+
     // Temporarily bypass auth check for demo purposes
     // if (!user?.isCreator) {
     //   router.push('/creator/onboarding');

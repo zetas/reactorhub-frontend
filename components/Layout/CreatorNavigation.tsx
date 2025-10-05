@@ -187,6 +187,7 @@ function SidebarContent({
                   <Link
                     href={item.href}
                     onClick={closeSidebar}
+                    prefetch={false}
                     className={clsx(
                       pathname === item.href
                         ? 'bg-gray-700 text-white'

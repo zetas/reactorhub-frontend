@@ -75,6 +75,15 @@ export default function ContentLibraryPage() {
   }, [setBreadcrumbs]);
 
   useEffect(() => {
+    // Check if user is authenticated before loading content
+    // This prevents prefetch from loading data for unauthenticated users
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.log('No auth token, skipping content library load');
+      setIsLoading(false);
+      return;
+    }
+
     // Temporarily bypass auth check for demo purposes
     // if (!user?.isCreator) {
     //   router.push('/creator/onboarding');
