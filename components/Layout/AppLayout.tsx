@@ -11,7 +11,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   // Determine which layout to use based on the current path
   const getLayoutType = () => {
-    if (pathname?.startsWith('/creator')) {
+    // Check for exact marketing pages first (before dashboard routes)
+    if (pathname === '/creators' || pathname?.startsWith('/creators/')) {
+      return 'home';
+    } else if (pathname === '/patrons') {
+      return 'home';
+    }
+    // Dashboard routes
+    else if (pathname?.startsWith('/creator')) {
       return 'creator';
     } else if (pathname?.startsWith('/patron') || pathname?.startsWith('/dashboard')) {
       return 'patron';
