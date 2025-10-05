@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/store';
 import { patron, creators, auth } from '@/lib/api';
+import { DashboardSkeleton } from '@/components/ui/Skeletons';
 import {
   Film,
   PlayCircle,
@@ -128,11 +129,7 @@ export default function PatronDashboard() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-dark-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary-500"></div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   return (
@@ -221,7 +218,7 @@ export default function PatronDashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="relative pt-20 pb-12">
+      <main className="relative pt-20 sm:pt-24 pb-20 md:pb-12">
         {/* Error State */}
         {error && (
           <div className="px-4 sm:px-6 lg:px-8 py-4">
@@ -250,11 +247,11 @@ export default function PatronDashboard() {
             alt="Featured content"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute bottom-0 left-0 z-20 p-8 max-w-2xl">
-            <h1 className="text-5xl font-bold mb-4 heading-gradient">
+          <div className="absolute bottom-0 left-0 z-20 p-6 sm:p-8 max-w-2xl">
+            <h1 className="heading-h2 mb-4 heading-gradient">
               {user?.name ? `Welcome, ${user.name}!` : 'Welcome to ReeActor!'}
             </h1>
-            <p className="text-xl text-dark-300 mb-6">
+            <p className="body-large text-dark-300 mb-6">
               Discover amazing content from your favorite creators
             </p>
             <div className="flex space-x-4">
@@ -272,11 +269,11 @@ export default function PatronDashboard() {
 
         {/* Stats Overview */}
         <section className="px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="glass-dark p-6 rounded-xl card-hover group">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-dark-400 text-sm">Watch Time This Week</p>
+                  <p className="text-dark-400 text-xs sm:text-sm">Watch Time This Week</p>
                   <p className="text-3xl font-bold heading-gradient mt-2">14h 32m</p>
                 </div>
                 <div className="p-3 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 transition-transform duration-200 group-hover:scale-110">
@@ -287,7 +284,7 @@ export default function PatronDashboard() {
             <div className="glass-dark p-6 rounded-xl card-hover group">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-dark-400 text-sm">Videos Watched</p>
+                  <p className="text-dark-400 text-xs sm:text-sm">Videos Watched</p>
                   <p className="text-3xl font-bold heading-gradient mt-2">47</p>
                 </div>
                 <div className="p-3 rounded-lg bg-gradient-to-br from-accent-500 to-accent-600 transition-transform duration-200 group-hover:scale-110">
@@ -298,7 +295,7 @@ export default function PatronDashboard() {
             <div className="glass-dark p-6 rounded-xl card-hover group">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-dark-400 text-sm">Subscriptions</p>
+                  <p className="text-dark-400 text-xs sm:text-sm">Subscriptions</p>
                   <p className="text-3xl font-bold heading-gradient mt-2">{subscribedCreators.length}</p>
                 </div>
                 <div className="p-3 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 transition-transform duration-200 group-hover:scale-110">
@@ -309,7 +306,7 @@ export default function PatronDashboard() {
             <div className="glass-dark p-6 rounded-xl card-hover group">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-dark-400 text-sm">Favorites</p>
+                  <p className="text-dark-400 text-xs sm:text-sm">Favorites</p>
                   <p className="text-3xl font-bold heading-gradient mt-2">12</p>
                 </div>
                 <div className="p-3 rounded-lg bg-gradient-to-br from-primary-400 to-primary-500 transition-transform duration-200 group-hover:scale-110">
@@ -322,7 +319,7 @@ export default function PatronDashboard() {
 
         {/* Continue Watching */}
         <section className="px-4 sm:px-6 lg:px-8 py-8">
-          <h2 className="text-2xl font-bold mb-6 flex items-center">
+          <h2 className="heading-h3 mb-6 flex items-center">
             <Clock className="h-6 w-6 mr-2 text-primary-500" />
             Continue Watching
           </h2>
@@ -331,8 +328,8 @@ export default function PatronDashboard() {
               <div className="w-16 h-16 bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <PlayCircle className="h-8 w-8 text-primary-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Ready to start watching?</h3>
-              <p className="text-gray-300 mb-6">
+              <h3 className="heading-h4 mb-2">Ready to start watching?</h3>
+              <p className="body-text text-gray-300 mb-6">
                 Connect your Patreon account to access content from all your supported creators
               </p>
               <button
@@ -377,7 +374,7 @@ export default function PatronDashboard() {
 
         {/* Recommended for You */}
         <section className="px-4 sm:px-6 lg:px-8 py-8">
-          <h2 className="text-2xl font-bold mb-6 flex items-center">
+          <h2 className="heading-h3 mb-6 flex items-center">
             <Star className="h-6 w-6 mr-2 text-primary-400" />
             Recommended for You
           </h2>
@@ -427,7 +424,7 @@ export default function PatronDashboard() {
         {/* Your Creators */}
         {subscribedCreators.length > 0 && (
           <section className="px-4 sm:px-6 lg:px-8 py-8">
-            <h2 className="text-2xl font-bold mb-6 flex items-center">
+            <h2 className="heading-h3 mb-6 flex items-center">
               <Users className="h-6 w-6 mr-2 text-accent-500" />
               Your Creators
             </h2>
@@ -457,7 +454,7 @@ export default function PatronDashboard() {
         {/* Recently Watched */}
         {recentlyWatched.length > 0 && (
           <section className="px-4 sm:px-6 lg:px-8 py-8">
-            <h2 className="text-2xl font-bold mb-6 flex items-center">
+            <h2 className="heading-h3 mb-6 flex items-center">
               <Calendar className="h-6 w-6 mr-2 text-accent-400" />
               Recently Watched
             </h2>

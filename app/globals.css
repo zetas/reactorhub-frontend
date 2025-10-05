@@ -314,6 +314,31 @@ html {
   .skeleton {
     @apply bg-gray-200 dark:bg-gray-700 rounded;
   }
+
+  /* Typography Scale */
+  .heading-h1 {
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight;
+  }
+
+  .heading-h2 {
+    @apply text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight;
+  }
+
+  .heading-h3 {
+    @apply text-xl sm:text-2xl font-semibold;
+  }
+
+  .heading-h4 {
+    @apply text-lg sm:text-xl font-medium;
+  }
+
+  .body-large {
+    @apply text-base sm:text-lg leading-relaxed;
+  }
+
+  .body-text {
+    @apply text-sm sm:text-base leading-relaxed;
+  }
 }
 
 /* Keyframe animations */

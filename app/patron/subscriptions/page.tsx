@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/lib/store';
 import { patron, auth } from '@/lib/api';
 import { useNavigation } from '@/contexts/NavigationContext';
+import { TableSkeleton } from '@/components/ui/Skeletons';
 import {
   Users,
   Star,
@@ -388,14 +389,16 @@ export default function SubscriptionsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-purple-600"></div>
+      <div className="min-h-screen bg-black pt-16 sm:pt-20 pb-20 md:pb-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <TableSkeleton rows={8} />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white pt-16 sm:pt-20 pb-20 md:pb-6">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-black/95 backdrop-blur-sm border-b border-gray-800">
         <div className="px-4 sm:px-6 lg:px-8 py-6">
@@ -406,8 +409,8 @@ export default function SubscriptionsPage() {
                   <Users className="h-6 w-6 text-purple-500" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold">My Subscriptions</h1>
-                  <p className="text-gray-400">
+                  <h1 className="heading-h2">My Subscriptions</h1>
+                  <p className="body-text text-gray-400">
                     {filteredSubscriptions.length} creator{filteredSubscriptions.length !== 1 ? 's' : ''}
                     • {formatCurrency(getTotalMonthlySpend(), 'USD')}/month
                   </p>
@@ -473,11 +476,11 @@ export default function SubscriptionsPage() {
           </div>
 
           {/* Stats Overview */}
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 p-4 rounded-lg backdrop-blur-sm border border-green-500/20">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 p-6 rounded-lg backdrop-blur-sm border border-green-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 text-sm">Active Subscriptions</p>
+                  <p className="text-gray-400 text-xs sm:text-sm">Active Subscriptions</p>
                   <p className="text-2xl font-bold text-green-400">
                     {subscriptions.filter(sub => sub.status === 'active').length}
                   </p>
@@ -485,10 +488,10 @@ export default function SubscriptionsPage() {
                 <CheckCircle className="h-8 w-8 text-green-500" />
               </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 p-4 rounded-lg backdrop-blur-sm border border-purple-500/20">
+            <div className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 p-6 rounded-lg backdrop-blur-sm border border-purple-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 text-sm">Monthly Spend</p>
+                  <p className="text-gray-400 text-xs sm:text-sm">Monthly Spend</p>
                   <p className="text-2xl font-bold text-purple-400">
                     {formatCurrency(getTotalMonthlySpend(), 'USD')}
                   </p>
@@ -496,10 +499,10 @@ export default function SubscriptionsPage() {
                 <DollarSign className="h-8 w-8 text-purple-500" />
               </div>
             </div>
-            <div className="bg-gradient-to-br from-blue-900/20 to-cyan-900/20 p-4 rounded-lg backdrop-blur-sm border border-blue-500/20">
+            <div className="bg-gradient-to-br from-blue-900/20 to-cyan-900/20 p-6 rounded-lg backdrop-blur-sm border border-blue-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 text-sm">Total Videos Watched</p>
+                  <p className="text-gray-400 text-xs sm:text-sm">Total Videos Watched</p>
                   <p className="text-2xl font-bold text-blue-400">
                     {subscriptions.reduce((total, sub) => total + sub.stats.videosWatched, 0)}
                   </p>
@@ -507,10 +510,10 @@ export default function SubscriptionsPage() {
                 <Play className="h-8 w-8 text-blue-500" />
               </div>
             </div>
-            <div className="bg-gradient-to-br from-orange-900/20 to-red-900/20 p-4 rounded-lg backdrop-blur-sm border border-orange-500/20">
+            <div className="bg-gradient-to-br from-orange-900/20 to-red-900/20 p-6 rounded-lg backdrop-blur-sm border border-orange-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 text-sm">Watch Time</p>
+                  <p className="text-gray-400 text-xs sm:text-sm">Watch Time</p>
                   <p className="text-2xl font-bold text-orange-400">
                     {formatDuration(subscriptions.reduce((total, sub) => total + sub.stats.watchTime, 0))}
                   </p>
@@ -659,7 +662,7 @@ export default function SubscriptionsPage() {
         ) : (
           <>
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredSubscriptions.map((subscription) => (
                   <div
                     key={subscription.id}
@@ -691,7 +694,7 @@ export default function SubscriptionsPage() {
                       <div className="flex items-center justify-between mb-2">
                         <Link
                           href={`/creators/${subscription.creator.id}`}
-                          className="text-xl font-bold hover:text-purple-400 transition truncate"
+                          className="heading-h4 hover:text-purple-400 transition truncate"
                         >
                           {subscription.creator.name}
                         </Link>
@@ -732,7 +735,7 @@ export default function SubscriptionsPage() {
                         </div>
                       </div>
 
-                      <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                      <p className="body-text text-gray-400 mb-4 line-clamp-2">
                         {subscription.creator.description}
                       </p>
 
