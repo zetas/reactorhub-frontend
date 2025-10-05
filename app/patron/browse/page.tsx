@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -24,6 +24,8 @@ import {
 type ViewMode = 'grid' | 'list';
 type SortOption = 'newest' | 'popular' | 'rating' | 'alphabetical';
 type FilterCategory = 'genre' | 'creator' | 'duration' | 'release';
+type DurationFilter = 'all' | 'short' | 'medium' | 'long';
+type StatusFilter = 'all' | 'watching' | 'completed' | 'new';
 
 interface Creator {
   id: string;
@@ -151,34 +153,98 @@ export default function BrowsePage() {
   const [selectedGenre, setSelectedGenre] = useState('All Genres');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set());
+  const [selectedDuration, setSelectedDuration] = useState<DurationFilter>('all');
+  const [selectedStatus, setSelectedStatus] = useState<StatusFilter>('all');
 
-  const filteredCreators = mockCreators.filter((creator) => {
-    const matchesSearch =
-      creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      creator.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      creator.category.toLowerCase().includes(searchQuery.toLowerCase());
+  // Helper function to parse duration string to minutes
+  const parseDuration = (duration: string): number => {
+    const parts = duration.split(':');
+    if (parts.length === 2) {
+      // Format: "MM:SS"
+      return parseInt(parts[0]);
+    } else if (parts.length === 3) {
+      // Format: "HH:MM:SS"
+      return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    }
+    return 0;
+  };
 
-    const matchesGenre =
-      selectedGenre === 'All Genres' ||
-      creator.category.includes(selectedGenre);
+  // Advanced filtering with useMemo for performance
+  const filteredAndSortedCreators = useMemo(() => {
+    let filtered = mockCreators;
 
-    return matchesSearch && matchesGenre;
-  });
+    // Search filter
+    if (searchQuery) {
+      filtered = filtered.filter((creator) =>
+        creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        creator.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        creator.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
-  const sortedCreators = [...filteredCreators].sort((a, b) => {
+    // Genre filter
+    if (selectedGenre !== 'All Genres') {
+      filtered = filtered.filter((creator) =>
+        creator.category.includes(selectedGenre)
+      );
+    }
+
+    // Duration filter
+    if (selectedDuration !== 'all') {
+      filtered = filtered.filter((creator) => {
+        const duration = parseDuration(creator.latestVideo.duration);
+        if (selectedDuration === 'short') return duration < 10;
+        if (selectedDuration === 'medium') return duration >= 10 && duration < 30;
+        if (selectedDuration === 'long') return duration >= 30;
+        return true;
+      });
+    }
+
+    // Status filter (simulated - in real app would check user's watch history)
+    if (selectedStatus !== 'all') {
+      // Mock implementation: filter randomly for demo
+      if (selectedStatus === 'new') {
+        // Show creators uploaded within last week
+        filtered = filtered.filter((creator) =>
+          creator.latestVideo.uploadedAt.includes('hour') || creator.latestVideo.uploadedAt.includes('day')
+        );
+      } else if (selectedStatus === 'watching') {
+        // In real app: show creators with in-progress content
+        filtered = filtered.slice(0, Math.ceil(filtered.length * 0.7));
+      } else if (selectedStatus === 'completed') {
+        // In real app: show creators where user finished all content
+        filtered = filtered.slice(0, Math.ceil(filtered.length * 0.4));
+      }
+    }
+
+    // Sorting
+    let sorted = [...filtered];
     switch (sortBy) {
       case 'newest':
-        return b.latestVideo.uploadedAt.localeCompare(a.latestVideo.uploadedAt);
+        sorted.sort((a, b) => {
+          // Simple time-based sorting (mock)
+          const aTime = a.latestVideo.uploadedAt;
+          const bTime = b.latestVideo.uploadedAt;
+          if (aTime.includes('hour') && !bTime.includes('hour')) return -1;
+          if (!aTime.includes('hour') && bTime.includes('hour')) return 1;
+          if (aTime.includes('day') && !bTime.includes('day')) return -1;
+          if (!aTime.includes('day') && bTime.includes('day')) return 1;
+          return 0;
+        });
+        break;
       case 'popular':
-        return b.subscribers - a.subscribers;
+        sorted.sort((a, b) => b.subscribers - a.subscribers);
+        break;
       case 'rating':
-        return b.rating - a.rating;
+        sorted.sort((a, b) => b.rating - a.rating);
+        break;
       case 'alphabetical':
-        return a.name.localeCompare(b.name);
-      default:
-        return 0;
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
     }
-  });
+
+    return sorted;
+  }, [mockCreators, searchQuery, selectedGenre, selectedDuration, selectedStatus, sortBy]);
 
   const toggleFilter = (filter: string) => {
     const newFilters = new Set(selectedFilters);
@@ -218,6 +284,32 @@ export default function BrowsePage() {
 
             {/* Controls */}
             <div className="flex gap-2">
+              {/* Duration Filter */}
+              <select
+                value={selectedDuration}
+                onChange={(e) => setSelectedDuration(e.target.value as DurationFilter)}
+                className="hidden sm:block px-3 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:border-red-600 focus:outline-none text-sm"
+                aria-label="Filter by video duration"
+              >
+                <option value="all">All Durations</option>
+                <option value="short">Under 10 min</option>
+                <option value="medium">10-30 min</option>
+                <option value="long">30+ min</option>
+              </select>
+
+              {/* Status Filter */}
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value as StatusFilter)}
+                className="hidden md:block px-3 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:border-red-600 focus:outline-none text-sm"
+                aria-label="Filter by watch status"
+              >
+                <option value="all">All Content</option>
+                <option value="new">New Uploads</option>
+                <option value="watching">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+
               {/* Filter Button */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
@@ -226,9 +318,10 @@ export default function BrowsePage() {
                     ? 'bg-red-600 border-red-600'
                     : 'bg-gray-900 border-gray-800 hover:border-gray-700'
                 }`}
+                aria-label="Toggle advanced filters"
               >
                 <Filter className="h-4 w-4" />
-                Filters
+                <span className="hidden lg:inline">More Filters</span>
                 {selectedFilters.size > 0 && (
                   <span className="ml-1 px-2 py-0.5 bg-white/20 rounded-full text-xs">
                     {selectedFilters.size}
@@ -241,6 +334,7 @@ export default function BrowsePage() {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
                 className="px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:border-red-600 focus:outline-none"
+                aria-label="Sort creators by"
               >
                 <option value="popular">Most Popular</option>
                 <option value="newest">Newest</option>
@@ -394,18 +488,35 @@ export default function BrowsePage() {
 
       {/* Results Count */}
       <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
           <h2 className="heading-h3">
-            {sortedCreators.length} Creators Found
+            {filteredAndSortedCreators.length} Creators Found
           </h2>
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
-            <TrendingUp className="h-4 w-4" />
-            <span className="hidden sm:inline">Trending searches: Anime, Breaking Bad, Marvel</span>
+          <div className="flex items-center gap-4">
+            {/* Active Filters Indicator */}
+            {(selectedDuration !== 'all' || selectedStatus !== 'all' || selectedGenre !== 'All Genres') && (
+              <button
+                onClick={() => {
+                  setSelectedDuration('all');
+                  setSelectedStatus('all');
+                  setSelectedGenre('All Genres');
+                  setSelectedFilters(new Set());
+                }}
+                className="text-sm text-red-400 hover:text-red-300 flex items-center gap-1"
+              >
+                <X className="h-4 w-4" />
+                Clear Filters
+              </button>
+            )}
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+              <TrendingUp className="h-4 w-4" />
+              <span className="hidden sm:inline">Trending searches: Anime, Breaking Bad, Marvel</span>
+            </div>
           </div>
         </div>
 
         {/* Empty State */}
-        {sortedCreators.length === 0 ? (
+        {filteredAndSortedCreators.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-full flex items-center justify-center">
               <Search className="h-12 w-12 text-gray-600" />
@@ -431,7 +542,7 @@ export default function BrowsePage() {
         {/* Content Grid/List */}
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {sortedCreators.map((creator) => (
+            {filteredAndSortedCreators.map((creator) => (
               <Link
                 key={creator.id}
                 href={`/creators/${creator.id}`}
@@ -511,7 +622,7 @@ export default function BrowsePage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {sortedCreators.map((creator) => (
+            {filteredAndSortedCreators.map((creator) => (
               <Link
                 key={creator.id}
                 href={`/creators/${creator.id}`}

@@ -197,6 +197,25 @@ export default function CreatorAnalyticsPage() {
     return `${minutes}m`;
   };
 
+  // Generate mock chart data based on time range
+  const generateChartData = (metric: 'views' | 'revenue' | 'engagement') => {
+    const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : timeRange === '90d' ? 90 : 365;
+    const data = [];
+
+    for (let i = 0; i < days; i++) {
+      let value = 0;
+      if (metric === 'views') {
+        value = 30000 + Math.random() * 20000 + (i * 100);
+      } else if (metric === 'revenue') {
+        value = 1000 + Math.random() * 500 + (i * 5);
+      } else {
+        value = 0.6 + Math.random() * 0.2;
+      }
+      data.push(value);
+    }
+    return data;
+  };
+
   // Removed formatCurrency - focusing on patron engagement metrics instead of revenue
 
   const getTrendIcon = (trend: number) => {
@@ -334,12 +353,26 @@ export default function CreatorAnalyticsPage() {
               </div>
             </div>
 
-            {/* Interactive Performance Chart */}
-            <PerformanceChart 
-              metric={selectedMetric} 
-              timeRange={timeRange}
-              className="mt-4"
-            />
+            {/* Simple Performance Chart */}
+            <div className="mt-4">
+              <SimpleLineChart
+                data={generateChartData(selectedMetric)}
+                label={selectedMetric}
+                color={
+                  selectedMetric === 'views' ? '#3b82f6' :
+                  selectedMetric === 'revenue' ? '#10b981' :
+                  '#dc2626'
+                }
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-2">
+                <span>
+                  {timeRange === '7d' ? '7 days ago' :
+                   timeRange === '30d' ? '30 days ago' :
+                   timeRange === '90d' ? '90 days ago' : '1 year ago'}
+                </span>
+                <span>Today</span>
+              </div>
+            </div>
           </div>
 
           {/* Patron Engagement Breakdown */}
@@ -423,21 +456,13 @@ export default function CreatorAnalyticsPage() {
                 <Monitor className="h-5 w-5 mr-2" />
                 Devices
               </h3>
-              
-              {/* Interactive Device Chart */}
-              <DeviceBreakdownChart data={analytics.demographics.devices} className="mb-4" />
-              
-              <div className="space-y-3">
-                {analytics.demographics.devices.map((device) => (
-                  <div key={device.name} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className={`w-3 h-3 rounded-full ${device.color} mr-3`} />
-                      <span className="text-sm">{device.name}</span>
-                    </div>
-                    <span className="text-sm font-medium">{device.percentage}%</span>
-                  </div>
-                ))}
-              </div>
+
+              {/* Simple Bar Chart for Devices */}
+              <SimpleBarChart
+                data={analytics.demographics.devices.map(d => d.percentage)}
+                labels={analytics.demographics.devices.map(d => d.name)}
+                color="#3b82f6"
+              />
             </div>
 
             {/* Top Locations */}
@@ -493,29 +518,13 @@ export default function CreatorAnalyticsPage() {
           {/* Traffic Sources */}
           <div className="bg-gray-800 rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-6">Traffic Sources</h2>
-            
-            {/* Interactive Traffic Sources Chart */}
-            <TrafficSourcesChart data={analytics.traffic_sources} className="mb-6" />
-            
-            <div className="space-y-4">
-              {analytics.traffic_sources.map((source, index) => (
-                <div key={index}>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>{source.source}</span>
-                    <span>{source.percentage}%</span>
-                  </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-red-600 h-2 rounded-full"
-                      style={{ width: `${source.percentage}%` }}
-                    />
-                  </div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {formatNumber(source.views)} views
-                  </div>
-                </div>
-              ))}
-            </div>
+
+            {/* Simple Bar Chart for Traffic */}
+            <SimpleBarChart
+              data={analytics.traffic_sources.map(s => s.percentage)}
+              labels={analytics.traffic_sources.map(s => `${s.source} (${formatNumber(s.views)} views)`)}
+              color="#10b981"
+            />
           </div>
         </div>
 
@@ -532,6 +541,95 @@ export default function CreatorAnalyticsPage() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Simple Line Chart Component
+function SimpleLineChart({ data, label, color = '#dc2626' }: { data: number[], label: string, color?: string }) {
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min;
+  const height = 200;
+  const width = 100;
+
+  const points = data.map((value, i) => {
+    const x = (i / (data.length - 1)) * width;
+    const y = range > 0 ? ((max - value) / range) * height : height / 2;
+    return `${x},${y}`;
+  }).join(' ');
+
+  return (
+    <div className="relative w-full" style={{ height: `${height}px` }}>
+      <svg className="w-full h-full" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style={{ stopColor: color, stopOpacity: 0.4 }} />
+            <stop offset="100%" style={{ stopColor: color, stopOpacity: 0 }} />
+          </linearGradient>
+        </defs>
+
+        {/* Filled area under line */}
+        <polygon
+          fill="url(#lineGradient)"
+          points={`0,${height} ${points} ${width},${height}`}
+        />
+
+        {/* Line */}
+        <polyline
+          fill="none"
+          stroke={color}
+          strokeWidth="0.5"
+          points={points}
+          vectorEffect="non-scaling-stroke"
+        />
+
+        {/* Dots at data points (show every nth point to avoid crowding) */}
+        {data.map((value, i) => {
+          if (data.length <= 30 || i % Math.ceil(data.length / 20) === 0) {
+            const x = (i / (data.length - 1)) * width;
+            const y = range > 0 ? ((max - value) / range) * height : height / 2;
+            return (
+              <circle
+                key={i}
+                cx={x}
+                cy={y}
+                r="0.5"
+                fill={color}
+                vectorEffect="non-scaling-stroke"
+              />
+            );
+          }
+          return null;
+        })}
+      </svg>
+    </div>
+  );
+}
+
+// Simple Bar Chart Component
+function SimpleBarChart({ data, labels, color = '#dc2626' }: { data: number[], labels: string[], color?: string }) {
+  const max = Math.max(...data);
+
+  return (
+    <div className="space-y-3">
+      {data.map((value, index) => (
+        <div key={index}>
+          <div className="flex justify-between text-xs text-gray-400 mb-1">
+            <span>{labels[index]}</span>
+            <span className="font-medium text-white">{value.toFixed(0)}</span>
+          </div>
+          <div className="w-full bg-gray-700 rounded-full h-2">
+            <div
+              className="h-2 rounded-full transition-all duration-500"
+              style={{
+                width: `${(value / max) * 100}%`,
+                backgroundColor: color
+              }}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

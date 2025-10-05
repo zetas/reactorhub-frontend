@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronRight, Check, Film, Users, TrendingUp, Shield, DollarSign, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import {
+  ChevronRight, ChevronLeft, Check, Film, Users, TrendingUp,
+  Shield, DollarSign, Zap, Play, Settings, Eye, Calendar,
+  BarChart, Bell, Sparkles
+} from 'lucide-react';
 import { auth } from '@/lib/api';
 
 const features = [
@@ -38,8 +43,14 @@ const features = [
 ];
 
 export default function CreatorOnboarding() {
+  const router = useRouter();
+  const [currentStep, setCurrentStep] = useState(0);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [step, setStep] = useState(1);
+  const [preferences, setPreferences] = useState({
+    notifications: true,
+    autoPublish: true,
+    weeklyDigest: false,
+  });
 
   const handleConnectCreatorPlatform = async () => {
     setIsConnecting(true);
@@ -52,163 +63,477 @@ export default function CreatorOnboarding() {
     }
   };
 
+  const handleComplete = () => {
+    router.push('/creator/dashboard');
+  };
+
+  const steps = [
+    {
+      title: 'Welcome to ReeActor',
+      subtitle: "Let's get your creator account set up",
+      component: <WelcomeStep onConnect={handleConnectCreatorPlatform} isConnecting={isConnecting} />
+    },
+    {
+      title: 'Connect Your Platform',
+      subtitle: 'Link your Patreon account to sync content',
+      component: <ConnectStep onConnect={handleConnectCreatorPlatform} isConnecting={isConnecting} />
+    },
+    {
+      title: 'Customize Settings',
+      subtitle: 'Configure your preferences',
+      component: <SettingsStep preferences={preferences} setPreferences={setPreferences} />
+    },
+    {
+      title: 'Preview Your Dashboard',
+      subtitle: 'See what your patrons will experience',
+      component: <PreviewStep onComplete={handleComplete} />
+    }
+  ];
+
+  const goToNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const goToPreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       {/* Header */}
-      <div className="fixed top-0 w-full bg-black/50 backdrop-blur-sm z-10">
+      <div className="fixed top-0 w-full bg-black/50 backdrop-blur-sm z-10 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-red-600">ReeActor</h1>
             <div className="text-sm text-gray-400">
-              Creator Onboarding
+              Step {currentStep + 1} of {steps.length}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="pt-24 pb-12 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Transform Your Creator Content into a{' '}
-            <span className="text-red-600">Streaming Experience</span>
-          </h1>
-          <p className="text-xl text-gray-300 mb-8">
-            Give your patrons a premium viewing experience with automatic series organization,
-            progress tracking, and a beautiful interface they&apos;ll love to use.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={handleConnectCreatorPlatform}
-              disabled={isConnecting}
-              className="px-8 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-            >
-              {isConnecting ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                  Connecting...
-                </>
-              ) : (
-                <>
-                  Connect with Creator Platform
-                  <ChevronRight className="ml-2 h-5 w-5" />
-                </>
-              )}
-            </button>
-            <button className="px-8 py-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition">
-              Watch Demo
-            </button>
-          </div>
-
-          <p className="mt-4 text-sm text-gray-500">
-            Takes 30 seconds • No credit card required • Cancel anytime
-          </p>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="py-16 px-4 bg-black/50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Everything You Need to Delight Your Patrons
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="p-6 bg-gray-900/50 rounded-lg border border-gray-800 hover:border-red-600 transition"
-              >
-                <feature.icon className="h-10 w-10 text-red-600 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-400 text-sm">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-16 px-4">
+      {/* Main Content */}
+      <div className="pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Get Started in 3 Simple Steps
-          </h2>
-          <div className="space-y-8">
-            {[
-              {
-                step: 1,
-                title: 'Connect Your Creator Platform',
-                description: 'Securely link your creator platform account with one click'
-              },
-              {
-                step: 2,
-                title: 'Content Automatically Organizes',
-                description: 'We automatically detect and organize your series, episodes, and movies'
-              },
-              {
-                step: 3,
-                title: 'Share with Patrons',
-                description: 'Send your patrons a link to start watching in the streaming-style interface'
-              }
-            ].map((item) => (
-              <div key={item.step} className="flex items-start space-x-4">
-                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                  step >= item.step ? 'bg-red-600' : 'bg-gray-800'
-                }`}>
-                  {step > item.step ? (
-                    <Check className="h-5 w-5 text-white" />
+          {/* Step Indicator */}
+          <div className="flex items-center justify-center mb-12">
+            {steps.map((step, index) => (
+              <div key={index} className="flex items-center">
+                <div className={`
+                  w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300
+                  ${index <= currentStep
+                    ? 'bg-red-600 text-white shadow-lg shadow-red-600/50'
+                    : 'bg-gray-700 text-gray-400'}
+                  ${index === currentStep ? 'scale-110' : 'scale-100'}
+                `}>
+                  {index < currentStep ? (
+                    <Check className="w-5 h-5" />
                   ) : (
-                    <span className="text-white font-semibold">{item.step}</span>
+                    <span>{index + 1}</span>
                   )}
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
-                  <p className="text-gray-400">{item.description}</p>
-                </div>
+                {index < steps.length - 1 && (
+                  <div className={`
+                    w-16 sm:w-24 h-1 mx-2 transition-all duration-300
+                    ${index < currentStep ? 'bg-red-600' : 'bg-gray-700'}
+                  `} />
+                )}
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Stats */}
-      <section className="py-16 px-4 bg-gradient-to-b from-red-900/20 to-transparent">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: '10K+', label: 'Creators' },
-              { value: '1M+', label: 'Videos Organized' },
-              { value: '99.9%', label: 'Uptime' },
-              { value: '4.9★', label: 'Creator Rating' }
-            ].map((stat, index) => (
-              <div key={index}>
-                <div className="text-4xl font-bold text-red-600 mb-2">{stat.value}</div>
-                <div className="text-gray-400">{stat.label}</div>
-              </div>
-            ))}
+          {/* Step Title */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-2">{steps[currentStep].title}</h2>
+            <p className="text-xl text-gray-400">{steps[currentStep].subtitle}</p>
+          </div>
+
+          {/* Step Content */}
+          <div className="bg-gray-900/50 rounded-lg border border-gray-800 p-6 sm:p-8 mb-8 min-h-[400px]">
+            {steps[currentStep].component}
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between items-center">
+            <button
+              onClick={goToPreviousStep}
+              disabled={currentStep === 0}
+              className={`
+                flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition
+                ${currentStep === 0
+                  ? 'opacity-0 cursor-not-allowed'
+                  : 'bg-gray-800 hover:bg-gray-700 text-white'}
+              `}
+            >
+              <ChevronLeft className="w-5 h-5" />
+              Back
+            </button>
+
+            {currentStep < steps.length - 1 ? (
+              <button
+                onClick={goToNextStep}
+                className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition"
+              >
+                Continue
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            ) : (
+              <button
+                onClick={handleComplete}
+                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg font-semibold transition shadow-lg shadow-red-600/50"
+              >
+                Get Started
+                <Sparkles className="w-5 h-5" />
+              </button>
+            )}
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  );
+}
 
-      {/* CTA */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">
-            Ready to Give Your Patrons a Premium Experience?
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Join thousands of creators who are delighting their patrons with ReeActor
-          </p>
-          <button
-            onClick={handleConnectCreatorPlatform}
-            disabled={isConnecting}
-            className="px-12 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+// Step 1: Welcome
+function WelcomeStep({ onConnect, isConnecting }: { onConnect: () => void, isConnecting: boolean }) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-2xl font-bold mb-4">
+          Transform Your Creator Content into a{' '}
+          <span className="text-red-600">Streaming Experience</span>
+        </h3>
+        <p className="text-gray-300 text-lg">
+          Give your patrons a premium viewing experience with automatic series organization,
+          progress tracking, and a beautiful interface they&apos;ll love to use.
+        </p>
+      </div>
+
+      {/* Features Grid */}
+      <div className="grid md:grid-cols-2 gap-4 mt-8">
+        {features.slice(0, 4).map((feature, index) => (
+          <div
+            key={index}
+            className="p-4 bg-gray-800/50 rounded-lg border border-gray-700 hover:border-red-600 transition"
           >
-            Start Free with Creator Platform
-          </button>
+            <feature.icon className="h-8 w-8 text-red-600 mb-3" />
+            <h4 className="text-lg font-semibold mb-1">{feature.title}</h4>
+            <p className="text-gray-400 text-sm">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-3 gap-4 mt-8 p-6 bg-gradient-to-r from-red-900/20 to-transparent rounded-lg">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-red-600">10K+</div>
+          <div className="text-sm text-gray-400">Creators</div>
         </div>
-      </section>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-red-600">1M+</div>
+          <div className="text-sm text-gray-400">Videos</div>
+        </div>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-red-600">99.9%</div>
+          <div className="text-sm text-gray-400">Uptime</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Step 2: Connect Platform
+function ConnectStep({ onConnect, isConnecting }: { onConnect: () => void, isConnecting: boolean }) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center mb-8">
+        <div className="w-20 h-20 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Users className="w-10 h-10 text-red-600" />
+        </div>
+        <h3 className="text-xl font-bold mb-2">Connect Your Creator Platform</h3>
+        <p className="text-gray-400">
+          Securely link your Patreon account to automatically sync your content and patrons
+        </p>
+      </div>
+
+      {/* Platform Connection Card */}
+      <div className="bg-gray-800 rounded-lg p-6 border-2 border-gray-700 hover:border-red-600 transition">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
+              <span className="text-2xl font-bold text-white">P</span>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold">Patreon</h4>
+              <p className="text-sm text-gray-400">Connect your Patreon account</p>
+            </div>
+          </div>
+          <Shield className="w-6 h-6 text-green-500" />
+        </div>
+
+        <button
+          onClick={onConnect}
+          disabled={isConnecting}
+          className="w-full px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+        >
+          {isConnecting ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+              Connecting...
+            </>
+          ) : (
+            <>
+              Connect with Patreon
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Security Notice */}
+      <div className="flex items-start gap-3 p-4 bg-blue-900/20 border border-blue-800 rounded-lg">
+        <Shield className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+        <div className="text-sm">
+          <p className="text-blue-300 font-medium mb-1">Your data is secure</p>
+          <p className="text-gray-400">
+            We use OAuth 2.0 authentication and never store your Patreon password.
+            We only request read access to organize your content.
+          </p>
+        </div>
+      </div>
+
+      {/* What happens next */}
+      <div className="space-y-3">
+        <p className="text-sm font-semibold text-gray-300">What happens next:</p>
+        <div className="space-y-2">
+          {[
+            'You\'ll be redirected to Patreon to authorize access',
+            'We\'ll import your posts and organize them into series',
+            'Your patrons can start watching with their existing Patreon tiers',
+            'You\'ll get access to detailed analytics and insights'
+          ].map((item, index) => (
+            <div key={index} className="flex items-start gap-2 text-sm text-gray-400">
+              <Check className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Step 3: Settings
+function SettingsStep({
+  preferences,
+  setPreferences
+}: {
+  preferences: any,
+  setPreferences: (prefs: any) => void
+}) {
+  const togglePreference = (key: string) => {
+    setPreferences({ ...preferences, [key]: !preferences[key] });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center mb-8">
+        <div className="w-20 h-20 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Settings className="w-10 h-10 text-purple-600" />
+        </div>
+        <h3 className="text-xl font-bold mb-2">Customize Your Settings</h3>
+        <p className="text-gray-400">
+          Configure how you want to manage your content and interact with patrons
+        </p>
+      </div>
+
+      {/* Settings Options */}
+      <div className="space-y-4">
+        <div className="bg-gray-800 rounded-lg p-5 border border-gray-700">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <Bell className="w-5 h-5 text-blue-400" />
+                <h4 className="font-semibold">Email Notifications</h4>
+              </div>
+              <p className="text-sm text-gray-400">
+                Get notified when patrons comment or interact with your content
+              </p>
+            </div>
+            <button
+              onClick={() => togglePreference('notifications')}
+              className={`
+                relative inline-flex h-6 w-11 items-center rounded-full transition-colors
+                ${preferences.notifications ? 'bg-red-600' : 'bg-gray-600'}
+              `}
+            >
+              <span
+                className={`
+                  inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+                  ${preferences.notifications ? 'translate-x-6' : 'translate-x-1'}
+                `}
+              />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg p-5 border border-gray-700">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <Play className="w-5 h-5 text-green-400" />
+                <h4 className="font-semibold">Auto-Publish New Content</h4>
+              </div>
+              <p className="text-sm text-gray-400">
+                Automatically make new Patreon posts available to corresponding tier patrons
+              </p>
+            </div>
+            <button
+              onClick={() => togglePreference('autoPublish')}
+              className={`
+                relative inline-flex h-6 w-11 items-center rounded-full transition-colors
+                ${preferences.autoPublish ? 'bg-red-600' : 'bg-gray-600'}
+              `}
+            >
+              <span
+                className={`
+                  inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+                  ${preferences.autoPublish ? 'translate-x-6' : 'translate-x-1'}
+                `}
+              />
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg p-5 border border-gray-700">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <BarChart className="w-5 h-5 text-yellow-400" />
+                <h4 className="font-semibold">Weekly Analytics Digest</h4>
+              </div>
+              <p className="text-sm text-gray-400">
+                Receive a weekly summary of your views, engagement, and top content
+              </p>
+            </div>
+            <button
+              onClick={() => togglePreference('weeklyDigest')}
+              className={`
+                relative inline-flex h-6 w-11 items-center rounded-full transition-colors
+                ${preferences.weeklyDigest ? 'bg-red-600' : 'bg-gray-600'}
+              `}
+            >
+              <span
+                className={`
+                  inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+                  ${preferences.weeklyDigest ? 'translate-x-6' : 'translate-x-1'}
+                `}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Additional Info */}
+      <div className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg">
+        <p className="text-sm text-gray-400">
+          <span className="font-medium text-white">Note:</span> You can change these settings anytime
+          from your creator dashboard settings page.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Step 4: Preview
+function PreviewStep({ onComplete }: { onComplete: () => void }) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center mb-8">
+        <div className="w-20 h-20 bg-green-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Eye className="w-10 h-10 text-green-600" />
+        </div>
+        <h3 className="text-xl font-bold mb-2">Your Dashboard Preview</h3>
+        <p className="text-gray-400">
+          Here's what you and your patrons will see
+        </p>
+      </div>
+
+      {/* Dashboard Preview Cards */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/10 rounded-lg p-5 border border-blue-800/50">
+          <Film className="w-8 h-8 text-blue-400 mb-3" />
+          <h4 className="font-semibold mb-2">Content Library</h4>
+          <p className="text-sm text-gray-400 mb-4">
+            All your Patreon posts organized into series and episodes with beautiful thumbnails
+          </p>
+          <div className="flex items-center gap-2 text-sm text-blue-400">
+            <Play className="w-4 h-4" />
+            <span>Auto-organized by show name</span>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/10 rounded-lg p-5 border border-purple-800/50">
+          <Users className="w-8 h-8 text-purple-400 mb-3" />
+          <h4 className="font-semibold mb-2">Patron Insights</h4>
+          <p className="text-sm text-gray-400 mb-4">
+            See which patrons have access to your content and how they're engaging
+          </p>
+          <div className="flex items-center gap-2 text-sm text-purple-400">
+            <TrendingUp className="w-4 h-4" />
+            <span>Real-time engagement metrics</span>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-green-900/30 to-green-800/10 rounded-lg p-5 border border-green-800/50">
+          <BarChart className="w-8 h-8 text-green-400 mb-3" />
+          <h4 className="font-semibold mb-2">Analytics Dashboard</h4>
+          <p className="text-sm text-gray-400 mb-4">
+            Track views, watch time, and engagement across all your content
+          </p>
+          <div className="flex items-center gap-2 text-sm text-green-400">
+            <Calendar className="w-4 h-4" />
+            <span>Daily, weekly, and monthly reports</span>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-red-900/30 to-red-800/10 rounded-lg p-5 border border-red-800/50">
+          <Sparkles className="w-8 h-8 text-red-400 mb-3" />
+          <h4 className="font-semibold mb-2">Premium Experience</h4>
+          <p className="text-sm text-gray-400 mb-4">
+            Give your patrons a Netflix-style viewing experience they'll love
+          </p>
+          <div className="flex items-center gap-2 text-sm text-red-400">
+            <Shield className="w-4 h-4" />
+            <span>Secure and private</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Ready to Launch */}
+      <div className="p-6 bg-gradient-to-r from-red-900/20 to-transparent border border-red-800/50 rounded-lg text-center">
+        <h4 className="text-xl font-bold mb-2">You're All Set!</h4>
+        <p className="text-gray-400 mb-4">
+          Click "Get Started" to access your creator dashboard and start delighting your patrons
+        </p>
+        <div className="flex items-center justify-center gap-6 text-sm">
+          <div className="flex items-center gap-2">
+            <Check className="w-4 h-4 text-green-500" />
+            <span className="text-gray-300">Account Connected</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Check className="w-4 h-4 text-green-500" />
+            <span className="text-gray-300">Settings Configured</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Check className="w-4 h-4 text-green-500" />
+            <span className="text-gray-300">Ready to Launch</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
