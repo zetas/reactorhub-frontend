@@ -1,5 +1,5 @@
 {
-  "name": "reactorhub",
+  "name": "reeactor",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -55,5 +55,5 @@
     "glob": "^10.3.10",
     "inflight": "npm:@nullvoxpopuli/inflight@^2.0.1"
   },
-  "description": "ReactorHub Frontend - Netflix-style UI for Patreon reaction content"
+  "description": "ReeActor Frontend - Netflix-style UI for Patreon reaction content"
 }

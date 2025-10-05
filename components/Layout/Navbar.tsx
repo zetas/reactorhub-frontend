@@ -31,7 +31,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-red-600">ReactorHub</span>
+              <span className="text-2xl font-bold text-red-600">ReeActor</span>
               {isCreator && <span className="text-xs bg-red-600 text-white px-2 py-1 rounded">CREATOR</span>}
             </Link>
 

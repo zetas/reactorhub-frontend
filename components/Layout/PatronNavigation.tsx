@@ -227,7 +227,7 @@ function SidebarContent({
       {/* Logo */}
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-primary">
         <Link href="/" className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-md p-1 -m-1">
-          <span className="text-xl font-bold text-red-600 drop-shadow-none">ReactorHub</span>
+          <span className="text-xl font-bold text-red-600 drop-shadow-none">ReeActor</span>
           <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded font-medium">PATRON</span>
         </Link>
       </div>

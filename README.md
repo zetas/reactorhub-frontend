@@ -1,6 +1,6 @@
-# ReactorHub Frontend
+# ReeActor Frontend
 
-Next.js frontend for ReactorHub - Netflix-style platform for Patreon reaction content.
+Next.js frontend for ReeActor - Netflix-style platform for Patreon reaction content.
 
 ## Stack
 

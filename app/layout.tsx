@@ -10,7 +10,7 @@ import { QueryProvider } from "@/components/Providers/QueryProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ReactorHub - Streaming Hub for Creator Reactions",
+  title: "ReeActor - Streaming Hub for Creator Reactions",
   description: "Watch your favorite creators' reaction content in a streaming-style interface",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },

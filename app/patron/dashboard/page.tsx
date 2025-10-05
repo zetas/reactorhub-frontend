@@ -142,7 +142,7 @@ export default function PatronDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
               <Link href="/" className="text-primary-500 text-2xl font-bold heading-gradient">
-                ReactorHub
+                ReeActor
               </Link>
               <nav className="hidden md:flex space-x-6">
                 <Link href="/dashboard" className="text-dark-50 font-semibold hover:text-primary-400 transition">
@@ -227,7 +227,7 @@ export default function PatronDashboard() {
           />
           <div className="absolute bottom-0 left-0 z-20 p-8 max-w-2xl">
             <h1 className="text-5xl font-bold mb-4 heading-gradient">
-              {user?.name ? `Welcome, ${user.name}!` : 'Welcome to ReactorHub!'}
+              {user?.name ? `Welcome, ${user.name}!` : 'Welcome to ReeActor!'}
             </h1>
             <p className="text-xl text-dark-300 mb-6">
               Discover amazing content from your favorite creators

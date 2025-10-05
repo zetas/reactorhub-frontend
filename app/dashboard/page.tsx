@@ -84,7 +84,7 @@ export default function PatronDashboard() {
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-dark-50">Trending Now</h2>
             <div className="glass-dark p-8 rounded-2xl card-hover">
               <p className="text-dark-300 text-center py-8 text-lg">
-                Discover what's popular on ReactorHub.
+                Discover what's popular on ReeActor.
               </p>
             </div>
           </section>

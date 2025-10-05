@@ -24,7 +24,7 @@ export default function SignupPage() {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <Link href="/" className="inline-block">
-              <h1 className="text-3xl font-bold text-red-500">ReactorHub</h1>
+              <h1 className="text-3xl font-bold text-red-500">ReeActor</h1>
             </Link>
             <h2 className="mt-6 text-3xl font-bold text-white">
               Create your account
@@ -135,7 +135,7 @@ export default function SignupPage() {
       {/* Right side - Features */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-red-600 to-purple-700">
         <div className="flex flex-col justify-center px-12 text-white">
-          <h2 className="text-4xl font-bold mb-8">Join the ReactorHub community</h2>
+          <h2 className="text-4xl font-bold mb-8">Join the ReeActor community</h2>
           
           <div className="space-y-8">
             <div className="flex items-start space-x-4">

@@ -71,7 +71,7 @@ export default function ForPatronsPage() {
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
           <div className="space-y-8">
             {[
-              { step: 1, title: 'Sign Up Free', description: 'Create your free ReactorHub account in seconds' },
+              { step: 1, title: 'Sign Up Free', description: 'Create your free ReeActor account in seconds' },
               { step: 2, title: 'Connect Your Subscriptions', description: 'Link your supported creators securely' },
               { step: 3, title: 'Start Watching', description: 'Enjoy all content in one beautiful interface' }
             ].map((item) => (
@@ -97,7 +97,7 @@ export default function ForPatronsPage() {
             onClick={() => router.push('/auth/signup')}
             className="px-8 py-4 bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold rounded-full hover:shadow-xl hover:shadow-red-500/50 transition-all"
           >
-            Join ReactorHub Free
+            Join ReeActor Free
           </button>
         </div>
       </section>

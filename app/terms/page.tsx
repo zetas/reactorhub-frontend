@@ -10,7 +10,7 @@ export default function TermsOfServicePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-red-600 text-2xl font-bold">
-              ReactorHub
+              ReeActor
             </Link>
             <Link
               href="/auth/signup"
@@ -42,7 +42,7 @@ export default function TermsOfServicePage() {
                 <h2 className="text-2xl font-semibold">1. Acceptance of Terms</h2>
               </div>
               <p className="text-gray-300 leading-relaxed">
-                By accessing and using ReactorHub, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
+                By accessing and using ReeActor, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.
               </p>
             </section>
 
@@ -53,7 +53,7 @@ export default function TermsOfServicePage() {
               </div>
               <div className="space-y-4 text-gray-300">
                 <p className="leading-relaxed">
-                  <strong className="text-white">2.1 Account Types:</strong> ReactorHub offers two types of accounts:
+                  <strong className="text-white">2.1 Account Types:</strong> ReeActor offers two types of accounts:
                 </p>
                 <ul className="list-disc list-inside ml-4 space-y-2">
                   <li><strong className="text-white">Patron Accounts:</strong> For users who want to watch reaction content</li>
@@ -98,7 +98,7 @@ export default function TermsOfServicePage() {
                 <h2 className="text-2xl font-semibold">4. Privacy and Data Protection</h2>
               </div>
               <p className="text-gray-300 leading-relaxed">
-                Your use of ReactorHub is also governed by our Privacy Policy. By using our service, you consent to the collection and use of information as outlined in our Privacy Policy.
+                Your use of ReeActor is also governed by our Privacy Policy. By using our service, you consent to the collection and use of information as outlined in our Privacy Policy.
               </p>
             </section>
 
@@ -109,13 +109,13 @@ export default function TermsOfServicePage() {
               </div>
               <div className="space-y-4 text-gray-300">
                 <p className="leading-relaxed">
-                  <strong className="text-white">5.1 Service Availability:</strong> ReactorHub is provided "as is" without any warranties, expressed or implied. We do not guarantee that the service will be uninterrupted or error-free.
+                  <strong className="text-white">5.1 Service Availability:</strong> ReeActor is provided "as is" without any warranties, expressed or implied. We do not guarantee that the service will be uninterrupted or error-free.
                 </p>
                 <p className="leading-relaxed">
-                  <strong className="text-white">5.2 Third-Party Content:</strong> ReactorHub acts as a platform for creators to share content. We are not responsible for the accuracy, completeness, or usefulness of any content posted by users.
+                  <strong className="text-white">5.2 Third-Party Content:</strong> ReeActor acts as a platform for creators to share content. We are not responsible for the accuracy, completeness, or usefulness of any content posted by users.
                 </p>
                 <p className="leading-relaxed">
-                  <strong className="text-white">5.3 Limitation of Liability:</strong> In no event shall ReactorHub be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service.
+                  <strong className="text-white">5.3 Limitation of Liability:</strong> In no event shall ReeActor be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service.
                 </p>
               </div>
             </section>
@@ -123,7 +123,7 @@ export default function TermsOfServicePage() {
             <section className="bg-gray-900 rounded-lg p-6">
               <h2 className="text-2xl font-semibold mb-4">6. Modifications to Terms</h2>
               <p className="text-gray-300 leading-relaxed">
-                We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting. Your continued use of ReactorHub after any modifications indicates your acceptance of the updated terms.
+                We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting. Your continued use of ReeActor after any modifications indicates your acceptance of the updated terms.
               </p>
             </section>
 
@@ -133,8 +133,8 @@ export default function TermsOfServicePage() {
                 If you have any questions about these Terms of Service, please contact us at:
               </p>
               <div className="mt-4 text-gray-300">
-                <p>Email: legal@reactorhub.com</p>
-                <p>Address: ReactorHub, Inc.</p>
+                <p>Email: legal@reeactor.com</p>
+                <p>Address: ReeActor, Inc.</p>
                 <p>123 Streaming Lane</p>
                 <p>Los Angeles, CA 90001</p>
               </div>
@@ -144,7 +144,7 @@ export default function TermsOfServicePage() {
           {/* Footer */}
           <div className="mt-12 pt-8 border-t border-gray-800 text-center">
             <p className="text-gray-400 text-sm">
-              By using ReactorHub, you acknowledge that you have read and understood these terms.
+              By using ReeActor, you acknowledge that you have read and understood these terms.
             </p>
             <div className="mt-4 flex justify-center space-x-6">
               <Link href="/privacy" className="text-red-600 hover:text-red-500">

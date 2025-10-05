@@ -582,7 +582,7 @@ export default function SubscriptionsPage() {
                 <div>
                   <h3 className="text-xl font-bold text-orange-400 mb-1">Connect Your Creator Platform Account</h3>
                   <p className="text-gray-400">
-                    Link your creator platform account to automatically sync your subscriptions and get the most out of ReactorHub.
+                    Link your creator platform account to automatically sync your subscriptions and get the most out of ReeActor.
                   </p>
                 </div>
               </div>

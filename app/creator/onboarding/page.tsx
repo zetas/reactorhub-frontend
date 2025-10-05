@@ -58,7 +58,7 @@ export default function CreatorOnboarding() {
       <div className="fixed top-0 w-full bg-black/50 backdrop-blur-sm z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-red-600">ReactorHub</h1>
+            <h1 className="text-2xl font-bold text-red-600">ReeActor</h1>
             <div className="text-sm text-gray-400">
               Creator Onboarding
             </div>
@@ -198,7 +198,7 @@ export default function CreatorOnboarding() {
             Ready to Give Your Patrons a Premium Experience?
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Join thousands of creators who are delighting their patrons with ReactorHub
+            Join thousands of creators who are delighting their patrons with ReeActor
           </p>
           <button
             onClick={handleConnectCreatorPlatform}

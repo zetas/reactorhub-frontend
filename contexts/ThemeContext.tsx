@@ -23,7 +23,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (typeof window !== 'undefined') {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    return 'dark'; // Default to dark for ReactorHub
+    return 'dark'; // Default to dark for ReeActor
   };
 
   // Resolve the actual theme to apply
@@ -53,7 +53,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('reactorhub-theme', newTheme);
+      localStorage.setItem('reeactor-theme', newTheme);
     }
     const resolved = resolveTheme(newTheme);
     setResolvedTheme(resolved);
@@ -70,7 +70,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Get saved theme from localStorage or default to system
     const savedTheme = (typeof window !== 'undefined' 
-      ? localStorage.getItem('reactorhub-theme') as Theme 
+      ? localStorage.getItem('reeactor-theme') as Theme 
       : null) || 'system';
     
     const resolved = resolveTheme(savedTheme);

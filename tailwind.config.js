@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // ReactorHub Brand Colors - New Scheme
+        // ReeActor Brand Colors - New Scheme
         brand: {
           primary: '#0F0F0F',    // True black
           secondary: '#E94B3C',  // Coral red

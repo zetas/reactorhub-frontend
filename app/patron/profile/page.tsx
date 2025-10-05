@@ -146,7 +146,7 @@ export default function PatronProfilePage() {
           {
             id: '1',
             title: 'First Watch',
-            description: 'Watched your first video on ReactorHub',
+            description: 'Watched your first video on ReeActor',
             icon: '🎬',
             unlockedAt: '2023-08-15T10:30:00.000Z',
             rarity: 'common'

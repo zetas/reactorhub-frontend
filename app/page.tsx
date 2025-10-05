@@ -69,7 +69,7 @@ export default function Home() {
     {
       name: 'Sarah Martinez',
       role: 'Creator',
-      content: 'My patrons love the premium experience. Views have increased 3x since joining ReactorHub.',
+      content: 'My patrons love the premium experience. Views have increased 3x since joining ReeActor.',
       rating: 5,
       avatar: 'https://i.pravatar.cc/150?img=2'
     },
@@ -337,7 +337,7 @@ export default function Home() {
             <span className="heading-gradient">Creator Experience?</span>
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Join ReactorHub today and never miss an episode again
+            Join ReeActor today and never miss an episode again
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
@@ -376,7 +376,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="text-2xl font-bold text-red-600 mb-4">ReactorHub</h3>
+              <h3 className="text-2xl font-bold text-red-600 mb-4">ReeActor</h3>
               <p className="text-gray-400 text-sm">
                 The premium platform for creator reaction content.
               </p>
@@ -407,7 +407,7 @@ export default function Home() {
             </div>
           </div>
           <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">© 2025 ReactorHub. All rights reserved.</p>
+            <p className="text-gray-400 text-sm">© 2025 ReeActor. All rights reserved.</p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <Globe className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer transition" />
               <Heart className="h-5 w-5 text-gray-400 hover:text-red-500 cursor-pointer transition" />

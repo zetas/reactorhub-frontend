@@ -11,7 +11,7 @@ export const placeholders = {
     const dimensions = `${width}x${height}`;
     const bgColor = '1f2937'; // gray-800
     const textColor = 'ffffff'; // white
-    const displayText = text ? encodeURIComponent(text) : 'ReactorHub';
+    const displayText = text ? encodeURIComponent(text) : 'ReeActor';
     
     return `${baseUrl}/${dimensions}/${bgColor}/${textColor}?text=${displayText}`;
   },

@@ -52,7 +52,7 @@ export default function ForCreatorsPage() {
       {/* Benefits */}
       <section className="py-16 px-4 bg-black/50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Creators Choose ReactorHub</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Why Creators Choose ReeActor</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit) => (
               <div key={benefit.title} className="p-6 bg-gray-800 rounded-lg">
@@ -70,7 +70,7 @@ export default function ForCreatorsPage() {
         <div className="max-w-4xl mx-auto text-center bg-gradient-to-r from-red-900/50 to-purple-900/50 rounded-2xl p-12">
           <h2 className="text-4xl font-bold mb-4">Ready to Elevate Your Content?</h2>
           <p className="text-xl text-gray-300 mb-8">
-            Join hundreds of creators already using ReactorHub
+            Join hundreds of creators already using ReeActor
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button

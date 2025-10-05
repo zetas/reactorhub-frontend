@@ -10,7 +10,7 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-red-600 text-2xl font-bold">
-              ReactorHub
+              ReeActor
             </Link>
             <Link
               href="/auth/signup"
@@ -165,7 +165,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong className="text-white">Opt-out:</strong> Unsubscribe from marketing communications</li>
                 </ul>
                 <p className="leading-relaxed">
-                  To exercise these rights, contact us at privacy@reactorhub.com
+                  To exercise these rights, contact us at privacy@reeactor.com
                 </p>
               </div>
             </section>
@@ -173,7 +173,7 @@ export default function PrivacyPolicyPage() {
             <section className="bg-gray-900 rounded-lg p-6">
               <h2 className="text-2xl font-semibold mb-4">7. Children's Privacy</h2>
               <p className="text-gray-300 leading-relaxed">
-                ReactorHub is not intended for children under 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us immediately.
+                ReeActor is not intended for children under 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us immediately.
               </p>
             </section>
 
@@ -198,10 +198,10 @@ export default function PrivacyPolicyPage() {
               </div>
               <div className="text-gray-300">
                 <p className="mb-4">For privacy-related questions or concerns:</p>
-                <p><strong className="text-white">Email:</strong> privacy@reactorhub.com</p>
-                <p><strong className="text-white">Data Protection Officer:</strong> dpo@reactorhub.com</p>
+                <p><strong className="text-white">Email:</strong> privacy@reeactor.com</p>
+                <p><strong className="text-white">Data Protection Officer:</strong> dpo@reeactor.com</p>
                 <p className="mt-4"><strong className="text-white">Mailing Address:</strong></p>
-                <p>ReactorHub, Inc.</p>
+                <p>ReeActor, Inc.</p>
                 <p>Attn: Privacy Team</p>
                 <p>123 Streaming Lane</p>
                 <p>Los Angeles, CA 90001</p>

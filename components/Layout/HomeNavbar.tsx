@@ -29,7 +29,7 @@ export default function HomeNavbar() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-red-600 animate-glow">ReactorHub</span>
+              <span className="text-2xl font-bold text-red-600 animate-glow">ReeActor</span>
               <span className="text-xs text-gray-400">Streaming Hub for Creators</span>
             </Link>
           </div>
