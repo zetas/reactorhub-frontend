@@ -24,6 +24,9 @@ fi
 # Export environment variables for build
 export $(cat .env | grep -v '^#' | xargs)
 
+# Clean build cache to ensure fresh build
+rm -rf .next
+
 # Build Next.js
 NODE_ENV=production npm run build
 
