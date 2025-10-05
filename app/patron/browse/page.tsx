@@ -199,9 +199,15 @@ export default function BrowsePage() {
             {/* Search Bar */}
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <label htmlFor="browse-search" className="sr-only">
+                  Search content
+                </label>
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" aria-hidden="true" />
                 <input
-                  type="text"
+                  id="browse-search"
+                  type="search"
+                  role="searchbox"
+                  aria-label="Search creators, shows, or categories"
                   placeholder="Search creators, shows, or categories..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -246,23 +252,29 @@ export default function BrowsePage() {
               <div className="flex bg-gray-900 border border-gray-800 rounded-lg">
                 <button
                   onClick={() => setViewMode('grid')}
+                  aria-label="Grid view"
+                  aria-pressed={viewMode === 'grid'}
                   className={`p-3 ${
                     viewMode === 'grid'
                       ? 'bg-red-600 text-white'
                       : 'text-gray-400 hover:text-white'
                   } rounded-l-lg transition-colors`}
                 >
-                  <Grid className="h-4 w-4" />
+                  <Grid className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">Grid view</span>
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
+                  aria-label="List view"
+                  aria-pressed={viewMode === 'list'}
                   className={`p-3 ${
                     viewMode === 'list'
                       ? 'bg-red-600 text-white'
                       : 'text-gray-400 hover:text-white'
                   } rounded-r-lg transition-colors`}
                 >
-                  <List className="h-4 w-4" />
+                  <List className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">List view</span>
                 </button>
               </div>
             </div>

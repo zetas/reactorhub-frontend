@@ -332,14 +332,20 @@ export default function HistoryPage() {
             <div className="flex items-center space-x-4">
               {/* Search */}
               <div className="relative">
+                <label htmlFor="history-search" className="sr-only">
+                  Search watch history
+                </label>
                 <input
-                  type="text"
+                  id="history-search"
+                  type="search"
+                  role="searchbox"
+                  aria-label="Search by title, creator, or series"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search history..."
                   className="bg-gray-800/50 text-white px-4 py-2 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
                 />
-                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" aria-hidden="true" />
               </div>
 
               {/* Filters */}

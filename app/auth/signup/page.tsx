@@ -83,6 +83,17 @@ export default function SignupPage() {
               </div>
             </div>
 
+            {/* Helper Text */}
+            {selectedType && (
+              <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                <p className="text-sm text-gray-300">
+                  {selectedType === 'patron'
+                    ? "We'll connect to your Patreon account to access your supported creators' content and organize everything in one beautiful streaming interface."
+                    : "We'll sync your Patreon creator account to help you organize your content automatically and provide analytics for your patrons."}
+                </p>
+              </div>
+            )}
+
             {/* Creator Platform Signup Button */}
             <button
               onClick={() => selectedType && handleCreatorPlatformSignup(selectedType)}

@@ -373,9 +373,15 @@ export default function ContentLibraryPage() {
         {/* Filters and Search */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <label htmlFor="content-search" className="sr-only">
+              Search content library
+            </label>
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
             <input
-              type="text"
+              id="content-search"
+              type="search"
+              role="searchbox"
+              aria-label="Search by title or description"
               placeholder="Search content..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -407,15 +413,21 @@ export default function ContentLibraryPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setViewMode('grid')}
+              aria-label="Grid view"
+              aria-pressed={viewMode === 'grid'}
               className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-purple-600' : 'bg-gray-800'}`}
             >
-              <Grid className="w-4 h-4" />
+              <Grid className="w-4 h-4" aria-hidden="true" />
+              <span className="sr-only">Grid view</span>
             </button>
             <button
               onClick={() => setViewMode('list')}
+              aria-label="List view"
+              aria-pressed={viewMode === 'list'}
               className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-purple-600' : 'bg-gray-800'}`}
             >
-              <List className="w-4 h-4" />
+              <List className="w-4 h-4" aria-hidden="true" />
+              <span className="sr-only">List view</span>
             </button>
           </div>
         </div>
@@ -501,15 +513,18 @@ export default function ContentLibraryPage() {
                   
                   <div className="flex justify-between items-center">
                     <div className="flex gap-2">
-                      <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                        <Edit3 className="w-4 h-4" />
+                      <button aria-label="Edit content" className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                        <Edit3 className="w-4 h-4" aria-hidden="true" />
+                        <span className="sr-only">Edit</span>
                       </button>
-                      <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                        <Eye className="w-4 h-4" />
+                      <button aria-label="View content" className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                        <Eye className="w-4 h-4" aria-hidden="true" />
+                        <span className="sr-only">View</span>
                       </button>
                     </div>
-                    <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                      <MoreVertical className="w-4 h-4" />
+                    <button aria-label="More options" className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                      <MoreVertical className="w-4 h-4" aria-hidden="true" />
+                      <span className="sr-only">More options</span>
                     </button>
                   </div>
                 </div>
@@ -575,14 +590,17 @@ export default function ContentLibraryPage() {
                 </div>
                 
                 <div className="flex gap-2">
-                  <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                    <Edit3 className="w-4 h-4" />
+                  <button aria-label="Edit content" className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                    <Edit3 className="w-4 h-4" aria-hidden="true" />
+                    <span className="sr-only">Edit</span>
                   </button>
-                  <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                    <Eye className="w-4 h-4" />
+                  <button aria-label="View content" className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                    <Eye className="w-4 h-4" aria-hidden="true" />
+                    <span className="sr-only">View</span>
                   </button>
-                  <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                    <MoreVertical className="w-4 h-4" />
+                  <button aria-label="More options" className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                    <MoreVertical className="w-4 h-4" aria-hidden="true" />
+                    <span className="sr-only">More options</span>
                   </button>
                 </div>
               </div>

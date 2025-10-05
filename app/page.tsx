@@ -19,7 +19,7 @@ export default function Home() {
       if (user.isCreator) {
         router.push('/creator/dashboard');
       } else {
-        router.push('/dashboard');
+        router.push('/patron/dashboard');
       }
     }
   }, [isAuthenticated, user, router]);
@@ -384,8 +384,8 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="/features" className="hover:text-white transition">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-white transition">Pricing</Link></li>
+                {/* <li><Link href="/features" className="hover:text-white transition">Features</Link></li> */}
+                {/* <li><Link href="/pricing" className="hover:text-white transition">Pricing</Link></li> */}
                 <li><Link href="/creators" className="hover:text-white transition">For Creators</Link></li>
               </ul>
             </div>
@@ -393,8 +393,8 @@ export default function Home() {
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><Link href="/about" className="hover:text-white transition">About</Link></li>
-                <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
-                <li><Link href="/careers" className="hover:text-white transition">Careers</Link></li>
+                {/* <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li> */}
+                {/* <li><Link href="/careers" className="hover:text-white transition">Careers</Link></li> */}
               </ul>
             </div>
             <div>

@@ -414,33 +414,45 @@ export default function SubscriptionsPage() {
             <div className="flex items-center space-x-4">
               {/* Search */}
               <div className="relative">
+                <label htmlFor="subscriptions-search" className="sr-only">
+                  Search creators
+                </label>
                 <input
-                  type="text"
+                  id="subscriptions-search"
+                  type="search"
+                  role="searchbox"
+                  aria-label="Search by creator name or tier"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search creators..."
                   className="bg-gray-800/50 text-white px-4 py-2 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
                 />
-                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" aria-hidden="true" />
               </div>
 
               {/* View Toggle */}
               <div className="flex bg-gray-800/50 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('grid')}
+                  aria-label="Grid view"
+                  aria-pressed={viewMode === 'grid'}
                   className={`p-2 rounded-md transition ${
                     viewMode === 'grid' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
                   }`}
                 >
-                  <Grid className="h-5 w-5" />
+                  <Grid className="h-5 w-5" aria-hidden="true" />
+                  <span className="sr-only">Grid view</span>
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
+                  aria-label="List view"
+                  aria-pressed={viewMode === 'list'}
                   className={`p-2 rounded-md transition ${
                     viewMode === 'list' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
                   }`}
                 >
-                  <List className="h-5 w-5" />
+                  <List className="h-5 w-5" aria-hidden="true" />
+                  <span className="sr-only">List view</span>
                 </button>
               </div>
 
@@ -735,6 +747,7 @@ export default function SubscriptionsPage() {
 
                         <button
                           onClick={() => handleToggleNotifications(subscription.id, !subscription.notifications)}
+                          aria-label={subscription.notifications ? 'Disable notifications' : 'Enable notifications'}
                           className={`p-2 rounded-md transition ${
                             subscription.notifications
                               ? 'text-yellow-400 hover:bg-yellow-600/20'
@@ -742,7 +755,8 @@ export default function SubscriptionsPage() {
                           }`}
                           title={subscription.notifications ? 'Disable notifications' : 'Enable notifications'}
                         >
-                          {subscription.notifications ? <Bell className="h-4 w-4" /> : <BellOff className="h-4 w-4" />}
+                          {subscription.notifications ? <Bell className="h-4 w-4" aria-hidden="true" /> : <BellOff className="h-4 w-4" aria-hidden="true" />}
+                          <span className="sr-only">{subscription.notifications ? 'Disable notifications' : 'Enable notifications'}</span>
                         </button>
 
                         <button
@@ -751,10 +765,12 @@ export default function SubscriptionsPage() {
                               ? handleResumeSubscription(subscription.id)
                               : handlePauseSubscription(subscription.id)
                           }
+                          aria-label={subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}
                           className="p-2 text-gray-400 hover:text-white hover:bg-gray-600/20 rounded-md transition"
                           title={subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}
                         >
-                          <Settings className="h-4 w-4" />
+                          <Settings className="h-4 w-4" aria-hidden="true" />
+                          <span className="sr-only">{subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}</span>
                         </button>
                       </div>
                     </div>
@@ -836,13 +852,15 @@ export default function SubscriptionsPage() {
 
                       <button
                         onClick={() => handleToggleNotifications(subscription.id, !subscription.notifications)}
+                        aria-label={subscription.notifications ? 'Disable notifications' : 'Enable notifications'}
                         className={`p-2 rounded-md transition ${
                           subscription.notifications
                             ? 'text-yellow-400 hover:bg-yellow-600/20'
                             : 'text-gray-400 hover:bg-gray-600/20'
                         }`}
                       >
-                        {subscription.notifications ? <Bell className="h-5 w-5" /> : <BellOff className="h-5 w-5" />}
+                        {subscription.notifications ? <Bell className="h-5 w-5" aria-hidden="true" /> : <BellOff className="h-5 w-5" aria-hidden="true" />}
+                        <span className="sr-only">{subscription.notifications ? 'Disable notifications' : 'Enable notifications'}</span>
                       </button>
 
                       <button
@@ -851,9 +869,11 @@ export default function SubscriptionsPage() {
                             ? handleResumeSubscription(subscription.id)
                             : handlePauseSubscription(subscription.id)
                         }
+                        aria-label={subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}
                         className="p-2 text-gray-400 hover:text-white hover:bg-gray-600/20 rounded-md transition"
                       >
-                        <Settings className="h-5 w-5" />
+                        <Settings className="h-5 w-5" aria-hidden="true" />
+                        <span className="sr-only">{subscription.status === 'paused' ? 'Resume subscription' : 'Pause subscription'}</span>
                       </button>
                     </div>
                   </div>
